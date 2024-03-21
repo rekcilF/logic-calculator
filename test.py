@@ -74,18 +74,14 @@ def truth(vars, list):
     listTruthTable = []
     divisor = 2
     i = 0
+    count = 0
     while i != len(list):
-        print(i)
-        count = 0
-        if len(re.findall(r"[\>|\_|\;|\||\^]", otherList[count])) == 1:
-            print(newList[count], otherList[count])
+        if len(re.findall(r"[\>|\_|\;|\||\^]", otherList[count])):
             newList.pop(count)
             otherList.pop(count)
             count -= 1
-            print(newList)
         i += 1
         count += 1
-        print(newList, otherList, "aaa")
     while x != y:
 
         totalNumber = 2**y
@@ -162,27 +158,37 @@ def operator(list, table):
     return newTable
 
 def lister(table, noOfVar):
+    print(len(table), noOfVar)
     listTable = []
-    for p in range(0, len(table) - 1):
+    for p in range(0, len(table)):
         listTable.append(table[p])
     newList = []
     x = 0
     max = -1
-    for i in range(0, noOfVar):
+    for p in range(0, noOfVar):
+        thing = (((2 ** noOfVar) // (2 ** x)) // 2)
         start = ((2**x)-1)
         max += (2**(x+1))
+        print(thing, "thing", start, "start", max, "max")
 
-        for y in range(start, max):
-            for z in range(0,(((2**noOfVar)//(x+1)) - 1)):
+        z = 1
+        while z <= thing:
+            print(z,"z")
+            for x in range(start,(max+1)):
+                newList.append(listTable[x])
+                print("added", listTable[x])
+                print(x, "x")
+            z += 1
 
-                newList.append(listTable[start])
-                start += 1
-        x += 1
-    newList.append(listTable[len(listTable) - 1])
-    newTable = []
-    for i in range(0, len(newList), (len(newList)//noOfVar)):
-        newTable.append(newList[i:i + (len(newList) // noOfVar)])
-    print(newTable)
+
+
+        x = p + 1
+
+    print(newList, len(newList), len(table))
+    # newTable = []
+    # for i in range(0, len(newList), (len(newList)//noOfVar)):
+    #     newTable.append(newList[i:i + (len(newList) // noOfVar)])
+    # print(newTable)
 
 
 
