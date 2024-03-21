@@ -16,7 +16,7 @@ def Or(x,y):
 
 def checker(string):
     newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "")
-    checkString = len(re.findall('/^[A-Za-z]$/', newString))
+    checkString = len(re.findall('[^A-Za-z]', newString))
     if checkString > 0:
         print("bad letters used try again")
         exit()
