@@ -84,31 +84,35 @@ def operator(list, table):
     if len(list) <= 2:
         print("too little arguments")
 
-    while len(list) != 1:
+    try:
+        while len(list) != 1:
 
-        lengthRequired = len(table)
-        extra = len(results) % (2**iter)
-        while extra != 0:
-            results.pop()
+            lengthRequired = len(table)
             extra = len(results) % (2**iter)
+            while extra != 0:
+                results.pop()
+                extra = len(results) % (2**iter)
 
-        if newTable != lengthRequired:
-            for i in range(0, len(results)):
-                newTable.insert(0, results[i])
-        iter += 1
-        total = len(newTable)
-        repeat = total//8
-        for i in range(0, 2**iter):
-            if list[1] == "^":
-                answer = And(newTable[i], newTable[2**iter])
-            elif list[1] == '|':
-                answer = Or(newTable[i], newTable[2**iter])
-            newTable.pop(2**iter)
-            newTable.pop(i)
-            newTable.insert(i, answer)
-            results.insert(0, answer)
-        list.pop(0)
-        list.pop(0)
+            if newTable != lengthRequired:
+                for i in range(0, len(results)):
+                    newTable.insert(0, results[i])
+            iter += 1
+            total = len(newTable)
+            repeat = total//8
+            for i in range(0, 2**iter):
+                if list[1] == "^":
+                    answer = And(newTable[i], newTable[2**iter])
+                elif list[1] == '|':
+                    answer = Or(newTable[i], newTable[2**iter])
+                newTable.pop(2**iter)
+                newTable.pop(i)
+                newTable.insert(i, answer)
+                results.insert(0, answer)
+            list.pop(0)
+            list.pop(0)
+    except:
+        print("sumn bad happened")
+        exit()
 
     print(newTable, "answers table")
     print(len(newTable), "to", (len(table)//2))
