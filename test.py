@@ -23,16 +23,18 @@ def checker(string):
 
 
 def parser(string):
+    table = []
     i = 0
     while i != len(string):
         if "~" in string[i]:
-            y.append(x[i] + x[i + 1])
+            table.append(string[i] + string[i + 1])
             i += 1
         elif " " in string[i]:
             pass
         else:
-            y.append(x[i])
+            table.append(string[i])
         i += 1
+    return table
 
 def truthVar(list):
 
@@ -118,7 +120,7 @@ def operator(list, table):
     print(len(newTable), "to", (len(table)//2))
 
 checker(x)
-parser(x)
+y = parser(x)
 print(y)
 truthVar(y)
 print(noOfVar)
