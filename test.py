@@ -72,7 +72,7 @@ def truth(vars, list):
     divisor = 2
     for i in range(0, len(newList) - 1):
         print(i)
-        if len(re.findall(r"[\>|\_|\;|\||\^]", newList[i])):
+        if len(re.findall(r"[\>|\_|\;|\||\^]", list[i])):
             newList.pop(i)
     while x != y:
 
