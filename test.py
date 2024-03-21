@@ -15,7 +15,7 @@ def Or(x,y):
     return x or y
 
 def checker(string):
-    newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "")
+    newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "").replace("~", "")
     checkString = len(re.findall('[^A-Za-z]', newString))
     if checkString > 0:
         print("bad letters used try again")
@@ -23,17 +23,34 @@ def checker(string):
 
 
 def parser(string):
+    global countOperators, expectedOperators
     table = []
     i = 0
-    while i != len(string):
-        if "~" in string[i]:
-            table.append(string[i] + string[i + 1])
+    try:
+        while i != len(string):
+            if "~" in string[i]:
+                table.append(string[i] + string[i + 1])
+                i += 1
+            elif " " in string[i]:
+                pass
+            else:
+                table.append(string[i])
             i += 1
-        elif " " in string[i]:
-            pass
-        else:
-            table.append(string[i])
-        i += 1
+        countOperators = 0
+        expectedOperators = int(((len(table) + 1) / 2) - 1)
+        for x in range(0, len(table)):
+            countOperators += len(re.findall(r"[\>|\_|\;|\||\^]", table[x]))
+        if countOperators != expectedOperators:
+            print("too many vars or operators")
+            print("vars", len(table), "expected operators", expectedOperators, "actual operators", countOperators)
+            exit()
+        if re.findall(r"[\>|\_|\;|\||\^]", table[0]):
+            print("can't start with operator")
+            exit()
+    except Exception as e:
+        print("error in parser")
+        print(e.message, e.args)
+        exit()
     return table
 
 def truthVar(list):
