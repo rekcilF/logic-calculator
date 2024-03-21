@@ -71,18 +71,21 @@ def truth(vars, list):
     x = 0
     y = vars
     listTruth = []
+    listTruthTable = []
     divisor = 2
     i = 0
     while i != len(list):
         print(i)
         count = 0
-        if len(re.findall(r"[\>|\_|\;|\||\^]", otherList[count])):
+        if len(re.findall(r"[\>|\_|\;|\||\^]", otherList[count])) == 1:
             print(newList[count], otherList[count])
             newList.pop(count)
             otherList.pop(count)
             count -= 1
+            print(newList)
         i += 1
         count += 1
+        print(newList, otherList, "aaa")
     while x != y:
 
         totalNumber = 2**y
@@ -91,22 +94,28 @@ def truth(vars, list):
         while (repeatNumber != (totalNumber/divisor)):
             if "~" in newList[x][0]:
                 listTruth.append(False)
+                listTruthTable.append(False)
             else:
                 listTruth.append(True)
+                listTruthTable.append(True)
             repeatNumber += 1
         repeatNumber = 0
         while (repeatNumber != (totalNumber/divisor)):
             if "~" in newList[x][0]:
                 listTruth.append(True)
+                listTruthTable.append(True)
             else:
                 listTruth.append(False)
+                listTruthTable.append(False)
+
             repeatNumber += 1
         x += 1
         divisor *= 2
     listTruth.append(True)
     listTruth.append(False)
     listTruth.reverse()
-    return listTruth
+    listTruthTable.reverse()
+    return listTruth, listTruthTable
 
 def operator(list, table):
 
@@ -152,13 +161,43 @@ def operator(list, table):
 
     return newTable
 
+def lister(table, noOfVar):
+    listTable = []
+    for p in range(0, len(table) - 1):
+        listTable.append(table[p])
+    newList = []
+    x = 0
+    max = -1
+    for i in range(0, noOfVar):
+        start = ((2**x)-1)
+        max += (2**(x+1))
+
+        for y in range(start, max):
+            for z in range(0,(((2**noOfVar)//(x+1)) - 1)):
+
+                newList.append(listTable[start])
+                start += 1
+        x += 1
+    newList.append(listTable[len(listTable) - 1])
+    newTable = []
+    for i in range(0, len(newList), (len(newList)//noOfVar)):
+        newTable.append(newList[i:i + (len(newList) // noOfVar)])
+    print(newTable)
+
+
+
+
 checker(x)
 y = parser(x)
 print(y)
 noOfVar = truthVar(y)
 print(noOfVar, y)
-listTruth = truth(noOfVar, y)
+listTruth = truth(noOfVar, y)[0]
+listTable = truth(noOfVar, y)[1]
 print(listTruth, y)
+print(listTruth)
 results = operator(y, listTruth)
 print(results)
-print(listTruth)
+print(listTable, len(listTable))
+lister(listTable, noOfVar)
+
