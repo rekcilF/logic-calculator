@@ -165,20 +165,20 @@ def lister(table, noOfVar):
     newList = []
     x = 0
     max = -1
+    count = 1
     for p in range(0, noOfVar):
         thing = (((2 ** noOfVar) // (2 ** x)) // 2)
-        start = ((2**x)-1)
+        print(thing, "thing")
+        start = ((2**x) - 1)
         max += (2**(x+1))
-        print(thing, "thing", start, "start", max, "max")
+        print(thing, "thing", start, "start", max, "max", count, "count")
 
-        z = 1
-        while z <= thing:
-            print(z,"z")
+        for z in range(0, thing):
+            print(z,"z", thing)
             for x in range(start,(max+1)):
                 newList.append(listTable[x])
-                print("added", listTable[x])
-                print(x, "x")
-            z += 1
+                print("added", listTable[x], x)
+            count += 1
 
 
 
