@@ -38,20 +38,22 @@ def parser(string):
 
 def truthVar(list):
 
-    global noOfVar
+    x = 0
     for i in range(0, len(y)):
-        noOfVar += len(re.findall('[A-Za-z]', y[i]))
+        x += len(re.findall('[A-Za-z]', y[i]))
+    return x
+
 
 def truth(vars, list):
-    global noOfVar, listTruth
 
     x = 0
-    y = noOfVar
+    y = vars
     i = 0
+    listTruth = []
     divisor = 2
-    while x != noOfVar:
+    while x != y:
 
-        totalNumber = 2**noOfVar
+        totalNumber = 2**y
         repeatNumber = 0
         while (repeatNumber != (totalNumber/divisor)):
             if "~" in list[i][0]:
@@ -71,6 +73,7 @@ def truth(vars, list):
     listTruth.append(True)
     listTruth.append(False)
     listTruth.reverse()
+    return listTruth
 
 def operator(list, table):
 
@@ -79,9 +82,6 @@ def operator(list, table):
         newTable.append(table[i])
     print(len(newTable))
     results = []
-    entry = 0
-    entryString = 0
-    operand = 0
     iter = 1
     if len(list) <= 2:
         print("too little arguments")
@@ -116,14 +116,14 @@ def operator(list, table):
         print("sumn bad happened")
         exit()
 
-    print(newTable, "answers table")
-    print(len(newTable), "to", (len(table)//2))
+    return newTable
 
 checker(x)
 y = parser(x)
 print(y)
-truthVar(y)
+noOfVar = truthVar(y)
 print(noOfVar)
-truth(noOfVar, y)
+listTruth = truth(noOfVar, y)
 print(listTruth)
-operator(y, listTruth)
+results = operator(y, listTruth)
+print(results)
