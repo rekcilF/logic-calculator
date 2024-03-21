@@ -169,13 +169,17 @@ def lister(table, noOfVar):
     for p in range(0, noOfVar):
         thing = (((2 ** noOfVar) // (2 ** x)) // 2)
         print(thing, "thing")
-        start = ((2**x) - 1)
+        start = (((2**x) - 1) + (p // thing))
+        startt = (2**p) - 1
+        check = p // thing
+        realStart = (startt) + check
         max += (2**(x+1))
-        print(thing, "thing", start, "start", max, "max", count, "count")
+        print(thing, "thing", start, "start", max, "max", count, "count", p, "p", ((2**x) - 1), "start no p")
+        print(realStart, "realstart", check, startt, 2**p, p, thing)
 
         for z in range(0, thing):
             print(z,"z", thing)
-            for x in range(start,(max+1)):
+            for x in range(realStart,(max+1)):
                 newList.append(listTable[x])
                 print("added", listTable[x], x)
             count += 1
