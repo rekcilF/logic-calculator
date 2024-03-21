@@ -187,11 +187,10 @@ def lister(table, noOfVar):
 
         x = p + 1
 
-    print(newList, len(newList), len(table))
-    # newTable = []
-    # for i in range(0, len(newList), (len(newList)//noOfVar)):
-    #     newTable.append(newList[i:i + (len(newList) // noOfVar)])
-    # print(newTable)
+    newTable = []
+    for i in range(0, len(newList), (len(newList)//noOfVar)):
+        newTable.append(newList[i:i + (len(newList) // noOfVar)])
+    return newTable
 
 
 
@@ -208,5 +207,6 @@ print(listTruth)
 results = operator(y, listTruth)
 print(results)
 print(listTable, len(listTable))
-lister(listTable, noOfVar)
+table = lister(listTable, noOfVar)
+print(table)
 
