@@ -1,4 +1,4 @@
-# & C:/Users/Carlo/AppData/Local/Programs/Python/Python312/python.exe "d:/Admin Files/Desktop/digitec/table/test.py" 
+# & C:/Users/Carlo/AppData/Local/Programs/Python/Python312/python.exe "d:/Admin Files/Desktop/digitec/table/test.py"
 import re
 
 x = input("formula here: ")
@@ -83,15 +83,15 @@ def operator(list, table):
     iter = 1
     if len(list) <= 2:
         print("too little arguments")
-    
+
     while len(list) != 1:
-        
+
         lengthRequired = len(table)
         extra = len(results) % (2**iter)
         while extra != 0:
             results.pop()
             extra = len(results) % (2**iter)
-            
+
         if newTable != lengthRequired:
             for i in range(0, len(results)):
                 newTable.insert(0, results[i])
@@ -109,7 +109,7 @@ def operator(list, table):
             results.insert(0, answer)
         list.pop(0)
         list.pop(0)
-    
+
     print(newTable, "answers table")
     print(len(newTable), "to", (len(table)//2))
 
