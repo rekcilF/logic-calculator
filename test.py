@@ -62,25 +62,32 @@ def truthVar(list):
 
 
 def truth(vars, list):
-
+    newList = []
+    for i in range(0, len(list)):
+        newList.append(list[i])
+    print(newList, list)
     x = 0
     y = vars
-    i = 0
     listTruth = []
     divisor = 2
+    for i in range(0, len(newList) - 1):
+        print(i)
+        if len(re.findall(r"[\>|\_|\;|\||\^]", newList[i])):
+            newList.pop(i)
     while x != y:
 
         totalNumber = 2**y
         repeatNumber = 0
+        print(newList[x][0], "list")
         while (repeatNumber != (totalNumber/divisor)):
-            if "~" in list[i][0]:
+            if "~" in newList[x][0]:
                 listTruth.append(False)
             else:
                 listTruth.append(True)
             repeatNumber += 1
         repeatNumber = 0
         while (repeatNumber != (totalNumber/divisor)):
-            if "~" in list[i][0]:
+            if "~" in newList[x][0]:
                 listTruth.append(True)
             else:
                 listTruth.append(False)
@@ -129,8 +136,9 @@ def operator(list, table):
                 results.insert(0, answer)
             list.pop(0)
             list.pop(0)
-    except:
+    except Exception as e:
         print("sumn bad happened")
+        print(e, e.__cause__)
         exit()
 
     return newTable
@@ -139,8 +147,9 @@ checker(x)
 y = parser(x)
 print(y)
 noOfVar = truthVar(y)
-print(noOfVar)
+print(noOfVar, y)
 listTruth = truth(noOfVar, y)
-print(listTruth)
+print(listTruth, y)
 results = operator(y, listTruth)
 print(results)
+print(listTruth)
