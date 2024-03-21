@@ -15,7 +15,7 @@ def Or(x,y):
     return x or y
 
 def checker(string):
-    newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "").replace("~", "")
+    newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "").replace("~", "").replace(" ", "")
     checkString = len(re.findall('[^A-Za-z]', newString))
     if checkString > 0:
         print("bad letters used try again")
@@ -63,17 +63,26 @@ def truthVar(list):
 
 def truth(vars, list):
     newList = []
+    otherList = []
     for i in range(0, len(list)):
         newList.append(list[i])
+        otherList.append(list[i])
     print(newList, list)
     x = 0
     y = vars
     listTruth = []
     divisor = 2
-    for i in range(0, len(newList) - 1):
+    i = 0
+    while i != len(list):
         print(i)
-        if len(re.findall(r"[\>|\_|\;|\||\^]", list[i])):
-            newList.pop(i)
+        count = 0
+        if len(re.findall(r"[\>|\_|\;|\||\^]", otherList[count])):
+            print(newList[count], otherList[count])
+            newList.pop(count)
+            otherList.pop(count)
+            count -= 1
+        i += 1
+        count += 1
     while x != y:
 
         totalNumber = 2**y
