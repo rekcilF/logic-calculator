@@ -2,8 +2,7 @@ import re
 import os
 import traceback
 
-
-noOfVar = 0
+print(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b")
 
 def And(x, y):
     c = x and y
@@ -21,16 +20,22 @@ def Xor(x, y):
     c = x ^ y
     return c
 
+def removeSpace(string):
+    try:
+        newString = string.replace(" ", "")
+        return newString
+    except Exception as e:
+        print(e)
+
 def checker(string):
     try:
-        newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "").replace("~", "").replace(" ", "")
+        newString = string.replace("^", "").replace("|", "").replace(";", "").replace(">", "").replace("_", "").replace("~", "")
         checkString = len(re.findall('[^A-Za-z]', newString))
         if checkString > 0:
             print("bad letters used try again")
             exit()
     except Exception as e:
         print(e)
-
 
 def parser(string):
     try:
@@ -42,8 +47,6 @@ def parser(string):
                 if "~" in string[i]:
                     table.append(string[i] + string[i + 1])
                     i += 1
-                elif " " in string[i]:
-                    pass
                 else:
                     table.append(string[i])
                 i += 1
@@ -169,7 +172,7 @@ def operator(list, table):
                     elif list[1] == "_":
                         answer = Xor(newTable[i], newTable[2**iter])
                     else:
-                        print("uh oh stinky")
+                        print("thats not an operator!")
                         exit()
                     newTable.pop(2**iter)
                     newTable.pop(i)
@@ -214,6 +217,7 @@ def lister(table, noOfVar):
 
 def calculator(x):
     try:
+        x = removeSpace(x)
         checker(x)
         y = parser(x)
         noOfVar = truthVar(y)[0]
@@ -225,6 +229,7 @@ def calculator(x):
         for i in range(0, noOfVar):
             print("var:", vars[i], table[i])
         print(x, results)
+        print("entered formula:", x)
     except Exception as e:
         print(e)
 
