@@ -7,4 +7,4 @@ DEBUG: pause: True
 DEBUG: repl: python
 DEBUG: args: ['D:\\a\\github\\logic\\logic-calculator\\table.py']
 INFO: return code: 1 (0x1)
-INFO: elapsed time: 12.944175
+INFO: elapsed time: 1.461919

@@ -9,12 +9,16 @@ font = ('Calibri', 13)
 text = {'font':font, 'text_color':'#000000', 'background_color':'#FFFFFF'}
 convertBtn = {'font': font, 'size': (10, 1)}
 
+tableCntn = []
+tableHeaders = []
+
 # layout
 layout = [
     [sg.Text('trooth table', **text)],
     [sg.Input('0', key='input', enable_events=True)],
     [sg.Text('', key='error', **text)],
-    [sg.Button('calculate', key='calc', **convertBtn)]
+    [sg.Button('calculate', key='calc', **convertBtn)],
+    [sg.Table(tableCntn, headings=tableHeaders, key="table")]
 ]
 
 # hilarious functions and such
@@ -286,23 +290,28 @@ def calculator(x):
         listTable = truth(noOfVar, y)[1]
         results = operator(y, listTruth)
         table = lister(listTable, noOfVar)
+        psgTable = lister(listTable, noOfVar)
+        psgHeader = []
         for i in range(0, noOfVar):
             print("var:", vars[i], table[i])
+            psgHeader.append(vars[i])
         print(x, results)
         print("entered formula:", x)
-        return results, table
+        psgHeader.append(x)
+        psgTable.append(results)
+        return results, table, psgTable, psgHeader
     except Exception as e:
         print(e)
 
 # the input part
 
-print(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b")
-
-ans = input("formula here: ")
-truthTable = calculator(ans)[0]
-resultTable = calculator(ans)[1]
-
-print(truthTable, resultTable)
+# print(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b")
+#
+# ans = input("formula here: ")
+# truthTable = calculator(ans)[0]
+# resultTable = calculator(ans)[1]
+#
+# print(truthTable, resultTable)
 
 
 
@@ -318,9 +327,17 @@ while True:
     print("Event", event)
     print("Value", value)
 
+    string = value['input']
+
     while len(value['input']) > 5:
         value['input'] = ''
         window['error'].update(value='too many!')
+    if event == "calc":
+        psgTable = calculator(string)[2]
+        psgHeader = calculator(string)[3]
+        window['table'].update(values = psgTable)
+        window['table'].update(headings = psgHeader)
+
 
 
 
