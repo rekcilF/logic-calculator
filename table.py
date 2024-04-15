@@ -10,7 +10,7 @@ text = {'font':font, 'text_color':'#000000', 'background_color':'#FFFFFF'}
 convertBtn = {'font': font, 'size': (10, 1)}
 
 tableCntn = []
-tableHeaders = []
+tableHeaders = ['a','b','c']
 
 # layout
 layout = [
@@ -18,7 +18,7 @@ layout = [
     [sg.Input('0', key='input', enable_events=True)],
     [sg.Text('', key='error', **text)],
     [sg.Button('calculate', key='calc', **convertBtn)],
-    [sg.Table(tableCntn, headings=tableHeaders, key="table")]
+    [sg.Table(tableCntn, headings=tableHeaders, key="table", enable_events=True, auto_size_columns=False, hide_vertical_scroll=True)]
 ]
 
 # hilarious functions and such
@@ -299,24 +299,25 @@ def calculator(x):
         print("entered formula:", x)
         psgHeader.append(x)
         psgTable.append(results)
-        return results, table, psgTable, psgHeader
+        return results, table, psgTable, psgHeader, noOfVar
     except Exception as e:
         print(e)
-
-# the input part
-
-# print(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b")
-#
-# ans = input("formula here: ")
-# truthTable = calculator(ans)[0]
-# resultTable = calculator(ans)[1]
-#
-# print(truthTable, resultTable)
+def splitter(list, noOfEnt):
+    return [list[x : x + noOfEnt] for x in range(0, len(list), noOfEnt)]
 
 
-
-
-
+def skipper(list):
+    amtList = len(list)
+    amtInList = len(list[0])
+    print(amtList)
+    newList = []
+    x = 0
+    while x != (amtInList):
+        for y in range(0, amtList):
+            newList.append(list[y][x])
+            print(list[y][x])
+        x += 1
+    return newList
 # window
 
 
@@ -335,8 +336,14 @@ while True:
     if event == "calc":
         psgTable = calculator(string)[2]
         psgHeader = calculator(string)[3]
-        window['table'].update(values = psgTable)
-        window['table'].update(headings = psgHeader)
+
+        vars = calculator(string)[4] + 1
+
+        psgTable1 = skipper(psgTable)
+        psgTable2 = splitter(psgTable1, (len(psgTable1)//(len(psgTable1)//vars)))
+        print(psgTable1, psgTable2)
+        window['table'].update(psgTable2)
+
 
 
 
