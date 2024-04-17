@@ -1,10 +1,10 @@
 INFO: Platform: win32
 INFO: Version Info: v0.3.0
 DEBUG: Log Path: cp.log
-DEBUG: command: ['python', 'D:\\a\\github\\logic\\logic-calculator\\table.py']
+DEBUG: command: ['python', 'D:\\a\\github\\logic\\logic-calculator\\test.py']
 DEBUG: file: None
 DEBUG: pause: True
 DEBUG: repl: python
-DEBUG: args: ['D:\\a\\github\\logic\\logic-calculator\\table.py']
-INFO: return code: 1 (0x1)
-INFO: elapsed time: 8.643546
+DEBUG: args: ['D:\\a\\github\\logic\\logic-calculator\\test.py']
+INFO: return code: 0 (0x0)
+INFO: elapsed time: 3.953007

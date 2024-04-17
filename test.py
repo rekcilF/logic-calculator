@@ -39,17 +39,19 @@ def checker(string):
 
 def parser(string):
     try:
-        global countOperators, expectedOperators
+        global countOperators, expectedOperators, table
         table = []
         i = 0
         try:
-            while i != len(string):
-                if "~" in string[i]:
-                    table.append(string[i] + string[i + 1])
-                    i += 1
-                else:
-                    table.append(string[i])
-                i += 1
+            # while i != len(string):
+            #     if "~" in string[i]:
+            #
+            #         table.append(string[i] + string[i + 1])
+            #         i += 1
+            #     else:
+            #         table.append(string[i])
+            #     i += 1
+            table = re.split(r"([\>|\_|\;|\||\^])", string)
             countOperators = 0
             expectedOperators = int(((len(table) + 1) / 2) - 1)
             for x in range(0, len(table)):
@@ -74,9 +76,9 @@ def truthVar(list):
         x = 0
         newList = []
         for i in range(0, len(list)):
-            x += len(re.findall('[A-Za-z]', list[i]))
             if len(re.findall('[A-Za-z]', list[i])):
                 newList.append(list[i])
+                x += 1
         return x, newList
     except Exception as e:
         print(e)

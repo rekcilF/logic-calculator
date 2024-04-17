@@ -6,19 +6,19 @@ import traceback
 
 #styling fonting and the such
 font = ('Calibri', 13)
+font2 = ('Calibri', 10)
 text = {'font':font, 'text_color':'#000000', 'background_color':'#FFFFFF'}
+infoText = {'font':font2, 'text_color':'#000000', 'background_color':'#FFFFFF'}
 convertBtn = {'font': font, 'size': (10, 1)}
 
-tableCntn = []
-tableHeaders = ['a','b','c']
 
 # layout
 layout = [
     [sg.Text('trooth table', **text)],
+    [sg.Text(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b", **infoText)],
     [sg.Input('0', key='input', enable_events=True)],
     [sg.Text('', key='error', **text)],
-    [sg.Button('calculate', key='calc', **convertBtn)],
-    [sg.Table(tableCntn, headings=tableHeaders, key="table", enable_events=True, auto_size_columns=False, hide_vertical_scroll=True)]
+    [sg.Button('calculate', key='calc', **convertBtn)]
 ]
 
 # hilarious functions and such
@@ -52,6 +52,7 @@ def removeSpace(string):
         # replaces whitespace with empty space
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
         # try except block tries to execute a piece of code and if there is an error, it doesn't crash the program and instead executes the code in the except block
 
@@ -64,12 +65,13 @@ def checker(string):
         checkString = len(re.findall('[^A-Za-z]', newString))
         if checkString > 0:
             print("bad letters used try again")
-            exit()
+            raise Exception("error!!")
             # len(re.findall()) turns re.findall into a number which is the amount of times re.findall has been found
 
             # if statement used to check if there is any instance of forbidden letters, it notifies the user that bad letters were used and exits the program
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
 # function that creates a table and separates a string into variables and operators
 
@@ -98,20 +100,20 @@ def parser(string):
             if countOperators != expectedOperators:
                 print("too many vars or operators")
                 print("vars", len(table), "expected operators", expectedOperators, "actual operators", countOperators)
-                exit()
+                raise Exception("error!!")
             if re.findall(r"[\>|\_|\;|\||\^]", table[0]):
                 print("can't start with operator")
-                exit()
+                raise Exception("error!!")
             # find all used to identify the operator in conjunction with an if statement which checks if the first character begins with an operator and exits if it is true
         except Exception as e:
             print("error in parser")
             print(e.message, e.args)
-            exit()
         return table
 
         # returns a list of a parsed string as a variable
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
 # function that returns a list with only variables and the number of varibles
 
@@ -128,6 +130,7 @@ def truthVar(list):
         return x, newList
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
 # function that creates a complete truth table with every combination of true and false between all the variables
 
@@ -187,11 +190,13 @@ def truth(vars, list):
         # returns two values as a list e.g [[listTruth], [listTruthTable]] and can be referred to as varName = truth(vars, list)[0] or varName = truth(vars, list)[1]
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
 # function that takes a parsed list and the associated truth table with it and executes the propositional logic (and, or, xor, nor and nand) and returns a complete table with all the results
 
 def operator(list, table):
     try:
+        print(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b")
         newTable = []
         for i in range(0, len(table)):
             newTable.append(table[i])
@@ -199,7 +204,7 @@ def operator(list, table):
         iter = 1
         if len(list) <= 2:
             print("too little arguments")
-
+            raise Exception("error!!")
         try:
             print(list)
             while len(list) != 1:
@@ -228,7 +233,7 @@ def operator(list, table):
                         answer = Xor(newTable[i], newTable[2**iter])
                     else:
                         print("thats not an operator!")
-                        exit()
+                        raise Exception("error!!")
                     # elif meaning else if which allows an if statement to be chained with other if statements
                     # else which means at the end of the if else statement, if none of those are met, the code in else is ran
                     newTable.pop(2**iter)
@@ -242,12 +247,12 @@ def operator(list, table):
                 print(list)
         except Exception as e:
             print("sumn bad happened")
-            print(e, e.__cause__)
-            exit()
+            raise Exception("error!!")
 
         return newTable
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
 # function that takes the completed truth table and the number of variables and correctly split the completed truth table and associate them with a variable
 
@@ -276,6 +281,7 @@ def lister(table, noOfVar):
         return newTable
     except Exception as e:
         print(e)
+        raise Exception("error!!")
 
 # function that simplifies the calculating process into one function that takes a string and returns both the results and the completed truth table
 
@@ -301,10 +307,14 @@ def calculator(x):
         psgTable.append(results)
         return results, table, psgTable, psgHeader, noOfVar
     except Exception as e:
-        print(e)
+        message = 136
+        return message, e
+
+# split a list into different character sizes
 def splitter(list, noOfEnt):
     return [list[x : x + noOfEnt] for x in range(0, len(list), noOfEnt)]
 
+# creates a new list that counts every 1st character in all lists because pysimplegui reads vertically not horizontally (very stinky)
 
 def skipper(list):
     amtList = len(list)
@@ -318,7 +328,20 @@ def skipper(list):
             print(list[y][x])
         x += 1
     return newList
-# window
+
+# popup Window
+
+def tableWindow(x, y):
+    lengthOfRows = len(x)
+    if lengthOfRows >= 32:
+        lengthOfRows = 32
+
+    tableLayout = [[sg.Table(x, headings=y, auto_size_columns=False, hide_vertical_scroll=True, num_rows=lengthOfRows)]]
+
+    newWindow = sg.Window("tabel view", tableLayout, background_color="#FFFFFF", grab_anywhere=True, modal=True)
+    event, value = newWindow.read()
+
+# main window
 
 
 window = sg.Window('Propositional Logic Calculator', layout, background_color="#FFFFFF", grab_anywhere=True)
@@ -329,23 +352,17 @@ while True:
     print("Value", value)
 
     string = value['input']
-
-    while len(value['input']) > 5:
-        value['input'] = ''
-        window['error'].update(value='too many!')
     if event == "calc":
-        psgTable = calculator(string)[2]
-        psgHeader = calculator(string)[3]
-
-        vars = calculator(string)[4] + 1
-
-        psgTable1 = skipper(psgTable)
-        psgTable2 = splitter(psgTable1, (len(psgTable1)//(len(psgTable1)//vars)))
-        print(psgTable1, psgTable2)
-        window['table'].update(psgTable2)
-
-
-
+        if calculator(string)[0] == 136:
+            window['error'].update(value=calculator(string)[1])
+        else:
+            psgTable = calculator(string)[2]
+            psgHeader = calculator(string)[3]
+            vars = calculator(string)[4] + 1
+            psgTable1 = skipper(psgTable)
+            psgTable2 = splitter(psgTable1, (len(psgTable1)//(len(psgTable1)//vars)))
+            tableWindow(psgTable2, psgHeader)
+            window['error'].update(value='')
 
 
 
