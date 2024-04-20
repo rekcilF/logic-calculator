@@ -83,6 +83,19 @@ def truthVar(list):
     except Exception as e:
         print(e)
 
+def repeatChecker(list):
+    try:
+        # [a, vc, bv , a]
+        for x in range(len(list)):
+            y = 0
+            while y != (len(list) - (x + 1)):
+                z = x + 1
+                if list[x] == list[y+z]:
+                    print("duplicate detected")
+                    exit()
+                y += 1
+    except Exception as e:
+        print(e)
 
 def truth(vars, list):
     try:
@@ -224,6 +237,7 @@ def calculator(x):
         y = parser(x)
         noOfVar = truthVar(y)[0]
         vars = truthVar(y)[1]
+        repeatChecker(vars)
         listTruth = truth(noOfVar, y)[0]
         listTable = truth(noOfVar, y)[1]
         results = operator(y, listTruth)
