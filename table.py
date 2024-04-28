@@ -10,14 +10,7 @@ font2 = ('Calibri', 10)
 text = {'font':font, 'text_color':'#000000', 'background_color':'#FFFFFF'}
 infoText = {'font':font2, 'text_color':'#000000', 'background_color':'#FFFFFF'}
 convertBtn = {'font': font, 'size': (10, 1)}
-psgTable2 = []
-psgHeader = []
-scrollToggle = True
-lengthOfRows = len(psgTable2)
-if lengthOfRows > 32:
-    lengthOfRows = 32
-    scroll = 'scroll to see the rest'
-    scrollToggle = False
+
 
 
 # layout
@@ -26,8 +19,7 @@ layout = [
     [sg.Text(" ^ = and \n | = or\n ; = nand\n > = nor\n _ = xor\n ~ to indicate negation\nfor example ~a^b", **infoText)],
     [sg.Input('~a^b', key='input', enable_events=True)],
     [sg.Text('', key='error', **infoText)],
-    [sg.Button('calculate', key='calc', **convertBtn)],
-    [sg.Table(psgTable2, headings=psgHeader, key="table", **infoText, auto_size_columns=False, hide_vertical_scroll=scrollToggle, num_rows=lengthOfRows, sbar_width = 2, sbar_arrow_width = 2, enable_events = True, enable_click_events = True, visible = False)]
+    [sg.Button('calculate', key='calc', **convertBtn)]
 ]
 
 # hilarious functions and such
@@ -324,6 +316,61 @@ def lister(table, noOfVar):
         print(e)
         raise Exception("Unknown Error - you shouldn't see this")
 
+def operatorOnly(list):
+
+    try:
+        opList = []
+        for x in range(0, len(list)):
+            if len(re.findall(r"[\>|\_|\;|\||\^]", list[x])):
+                opList.append(list[x])
+
+        opList.append("=")
+        return opList
+    except Exception as e:
+        print(e)
+
+def addOperator(varList, opList):
+    try:
+        newList = []
+        for x in range(0, (len(varList))):
+            newList.append(varList[x])
+        counter = 0
+        for x in range(0, len(opList)):
+            counter += 1
+            newList.insert((x + counter), opList[x])
+        return newList
+    except Exception as e:
+        print(e)
+
+def listToString(list):
+    try:
+        newList = []
+        for x in range(0, len(list)):
+            newList.append(list[x])
+        string = str(newList)
+        newString = string.replace("^", "and").replace("|", "or").replace(';', 'nand').replace(">", 'nor').replace("_", "xor").replace('[', '').replace(']', '').replace(',', '').replace('\'', '')
+        return newString
+    except Exception as e:
+        print(e)
+# split a list into different character sizes
+def splitter(list, noOfEnt):
+    return [list[x : x + noOfEnt] for x in range(0, len(list), noOfEnt)]
+
+# creates a new list that counts every 1st character in all lists because pysimplegui reads vertically not horizontally (very stinky)
+
+def skipper(list):
+    amtList = len(list)
+    amtInList = len(list[0])
+    print(amtList)
+    newList = []
+    x = 0
+    while x != (amtInList):
+        for y in range(0, amtList):
+            newList.append(list[y][x])
+            print(list[y][x])
+        x += 1
+    return newList
+
 # function that simplifies the calculating process into one function that takes a string and returns both the results and the completed truth table
 
 def calculator(x):
@@ -348,33 +395,17 @@ def calculator(x):
         print("entered formula:", x)
         psgHeader.append(x)
         psgTable.append(results)
-        return results, table, psgTable, psgHeader, noOfVar
+        opOnly = operatorOnly(parser(x))
+        psgTable1 = skipper(psgTable)
+        psgTable2 = splitter(psgTable1, (len(psgTable1)//(len(psgTable1)//(noOfVar + 1))))
+        return results, table, psgTable2, psgHeader, noOfVar, opOnly
     except Exception as e:
         message = 136
         return message, e
 
-# split a list into different character sizes
-def splitter(list, noOfEnt):
-    return [list[x : x + noOfEnt] for x in range(0, len(list), noOfEnt)]
-
-# creates a new list that counts every 1st character in all lists because pysimplegui reads vertically not horizontally (very stinky)
-
-def skipper(list):
-    amtList = len(list)
-    amtInList = len(list[0])
-    print(amtList)
-    newList = []
-    x = 0
-    while x != (amtInList):
-        for y in range(0, amtList):
-            newList.append(list[y][x])
-            print(list[y][x])
-        x += 1
-    return newList
-
 # popup Window
 
-def tableWindow(x, y):
+def tableWindow(x, y, z):
     lengthOfRows = len(x)
     scroll = ''
     scrollToggle = True
@@ -383,16 +414,24 @@ def tableWindow(x, y):
         scroll = 'scroll to see the rest'
         scrollToggle = False
 
-    tableLayout = [
+    layout = [
         [sg.Text(scroll, **infoText)],
-        [sg.Table(x, headings=y, **infoText, auto_size_columns=False, hide_vertical_scroll=scrollToggle, num_rows=lengthOfRows, sbar_width = 2, sbar_arrow_width = 2, enable_events = True, enable_click_events = True)]
+        [sg.Table(x, headings=y, **infoText, auto_size_columns=False, hide_vertical_scroll=scrollToggle, num_rows=lengthOfRows, sbar_width = 2, sbar_arrow_width = 2, enable_events = True, enable_click_events = True)],
+        [sg.Text('', key='display', **infoText)]
     ]
 
-    newWindow = sg.Window("tabel view", tableLayout, background_color="#FFFFFF", grab_anywhere=True, modal=True)
+    newWindow = sg.Window("tabel view", layout, background_color="#FFFFFF", grab_anywhere=True, modal=True)
     while True:
         event, value = newWindow.read()
         print('Event', event)
         print('Value', value)
+        if event == 0:
+            print(z)
+            print(x[value[0][0]])
+            complete = addOperator(x[value[0][0]], z)
+            completeString = listToString(complete)
+            print(completeString)
+            newWindow['display'].update(value=completeString)
         if event == sg.WIN_CLOSED:
             break
 
@@ -400,9 +439,11 @@ def tableWindow(x, y):
 
 # main window
 
-window = sg.Window('Propositional Logic Calculator', layout, background_color="#FFFFFF", grab_anywhere=True)
+
+window = sg.Window('Propositional Logic Calculator', layout, background_color="#FFFFFF", grab_anywhere=True, finalize=True)
 
 while True:
+
     event, value = window.read()
     print("Event", event)
     print("Value", value)
@@ -418,10 +459,10 @@ while True:
             vars = calculator(string)[4] + 1
             psgTable1 = skipper(psgTable)
             psgTable2 = splitter(psgTable1, (len(psgTable1)//(len(psgTable1)//vars)))
-            window['table'].update(visible=True)
-            window.read()
 
-            # tableWindow(psgTable2, psgHeader)
+            opVar = calculator(string)[5]
+
+            tableWindow(psgTable, psgHeader, opVar)
 
     if event == sg.WIN_CLOSED:
         break
