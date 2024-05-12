@@ -1,0 +1,56 @@
+BEGIN calculate
+
+IF the input is changed
+
+    CHECK if it is all in letters and operators
+
+    IF not in all letters and operators
+        UPDATE tell user to make it letters and operators
+    ENDIF
+    REMOVE all spaces
+
+ENDIF
+
+GET number of characters in string
+CREATE truth table list
+CREATE truth table answer list
+CREATE list of variables from string and logic statement
+RETURN list of variables from string and logic statement, truth table answer list, truth table list
+
+IF error
+    DISPLAY show error and how to fix it
+ENDIF
+
+END
+
+BEGIN table window
+    IF table is clicked
+        DISPLAY currently selected row
+    ENDIF
+END
+
+BEGIN event loop
+    IF calculate button is clicked
+       CALCULATE input value
+    ENDIF
+    TABLE WINDOW
+END
+
+
+BEGIN convert
+
+IF converting temperature
+
+    SET celsius =  (fahrenheit - 32 ) * 5 / 9
+
+ELSE IF converting butter (sticks)
+
+    SET butter (grams) = sticks * 113
+
+ELSE IF converting butter (tablespoons)
+
+    SET butter (grams) = tablespoons * 14.175
+
+ENDIF
+
+END
